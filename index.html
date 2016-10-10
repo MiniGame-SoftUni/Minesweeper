@@ -1,17 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>MiniGame - Minesweeper</title>
-        <link rel="stylesheet" href="css/style.css"/>
-        <script src="script/minesweeper.js"></script>
-    </head>
-    <body>
-        <div id="cameCanvas">
-            <canvas id="gCanvas" width="400" height="400"></canvas>
-        </div>
-        <div id="controls">
+<head>
+    <meta charset="UTF-8">
+    <title>MiniGame - Minesweeper</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="script/jquery-3.0.0.min.js"></script>
+    <script src="script/minesweeper.js"></script>
+    <script src="script/users.js"></script>
+</head>
+<body>
+<div id="cameCanvas">
+    <canvas id="gCanvas" width="400" height="400"></canvas>
+</div>
+<div id="controls">
 
-        </div>
-    </body>
+</div>
+
+<div id="usersWrapper">
+    <section id="navbar">
+        <ul>
+            <a href="#" id="linkLogin"><li>LOGIN</li></a>
+            <a href="#" id="linkRegister"><li>REGISTER</li></a>
+            <a href="#" id="linkProfile"><li>LOGOUT</li></a>
+        </ul>
+    </section>
+
+    <section id="viewRegister">
+        <form id="registerForm">
+            <div>
+                <span class="span-form">Full name</span>&nbsp;
+                <input type="text" id="registerFullName"/>
+            </div>
+            <br/>
+            <div>
+                <span class="span-form">Email adress</span>&nbsp;
+                <input type="email" id="registerEmailAdress"/>
+            </div>
+            <br/>
+            <div>
+                <span class="span-form">User name<span class="red-stars">*</span></span>&nbsp;
+                <input type="text" id="registerUserName" required/>
+            </div>
+            <br/>
+            <div>
+                <span class="span-form">Password<span class="red-stars">*</span></span>&nbsp;
+                <input type="password" id="registerPassword" required/>
+            </div>
+            <br/>
+            <div>
+                <span class="span-form">Confirm password<span class="red-stars">*</span></span>&nbsp;
+                <input type="password" id="registerConfirmPassword" required/>
+            </div>
+            <br/>
+            <div>
+                <input type="submit" id="registerButton" value="Register"/>
+            </div>
+        </form>
+    </section>
+
+    <section id="viewLogin">
+        <form id="loginForm">
+            <div>
+                <span class="span-form">Username</span>
+                <input type="text" id="loginUserName" required/>
+            </div>
+            <br/>
+            <div>
+                <span class="span-form">Password&nbsp;</span>
+                <input type="password" id="loginPassword" required/>
+            </div>
+            <br/>
+            <div>
+                <input type="submit" id="loginButton" value="Login"/>
+            </div>
+        </form>
+    </section>
+</div>
+
+</body>
 </html>
