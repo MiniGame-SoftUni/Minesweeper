@@ -50,7 +50,7 @@ window.onclick = function (e) {
     }
 
     if(clickedBomb == false){
-        clickPass();
+        clickPass(clickedX, clickedY);
     }
 };
 
@@ -114,7 +114,7 @@ function drawCanvas() {
 
 }
 
-function  clickPass() {
+function  clickPass(x, y) {
     let boxesToCheck=[
         [-1,-1],
         [0,-1],
@@ -130,13 +130,32 @@ function  clickPass() {
 
     for(let i in boxesToCheck){
         for( let n = 0; n < 10 ;n++){
-            if(checkBomb(n,clickedX + boxesToCheck[i][0],clickedY + boxesToCheck[i][1]) == true){
+            if(checkBomb(n,x + boxesToCheck[i][0],y + boxesToCheck[i][1]) == true){
                 numbOfBombsSurrounding++;
             }
         }
     }
 
-    clickedBs[(clickedBs.length)] = [clickedX, clickedY, numbOfBombsSurrounding];
+    clickedBs[(clickedBs.length)] = [x, y, numbOfBombsSurrounding];
+
+    if (numbOfBombsSurrounding == 0) {
+        for(i in boxesToCheck ){
+            if(x+ boxesToCheck[i][0] >= 0 && x + boxesToCheck[i][0] <= 9 && y + boxesToCheck[i][1] >= 0 && y + boxesToCheck[i][1] <= 9 ){
+               let x1 = x + boxesToCheck[i][0];
+                let y1 = y + boxesToCheck[i][1];
+
+                var alreadyClicked = false;
+                for (n in clickedBs){
+                    if(clickedBs[n][0] == x1 && clickedBs[n][1] == y1 ){
+                        alreadyClicked = true;
+                    }
+                }
+                if(alreadyClicked == false) {
+                    clickPass(x1, y1);
+                }
+             }
+        }
+    }
 
     drawCanvas();
 
