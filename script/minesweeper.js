@@ -2,10 +2,10 @@
 let userProgress; //TODO: това ще пази резултата на всеки играч
 
 let s = { // TODO: let matrix / това е матрицата, представена като обект
-    rows: 13,
-    cols: 13,
-    width: 30,
-    height: 30 // тези двете трябва да са по 30 и боксчетата да имат бял бордер
+    rows: 10,
+    cols: 10,
+    width: 38,
+    height: 38 
 };
 
 let c; //Това е фактически е канваса, демек контролер върху цялата игра
@@ -65,9 +65,9 @@ function init() {
     zero = new Image();
     zero.src = "./img/zero.png";
 
-    for(let i =0; i<10;i++){
-        bombs[i]=[Math.floor(Math.random()*10),
-                  Math.floor(Math.random()*10)]
+    for(let i =0; i < 10;i++){
+        bombs[i]=[Math.floor(Math.random() * 10),
+                  Math.floor(Math.random() * 10)]
     }
 
     drawCanvas();
@@ -107,8 +107,8 @@ function drawCanvas() {
 
     for(let i in clickedBs){
         if(clickedBs[i][2] > 0){
-            c.font = '20px mnospace';
-            c.fillText(clickedBs[i][2], clickedBs[i][0] * s.width + 9, clickedBs[i][1] * s.height + 21); //TODO: от тук се центрират числата в/у боксчетата
+            c.font = '20px arial';
+            c.fillText(clickedBs[i][2], clickedBs[i][0] * s.width + 15, clickedBs[i][1] * s.height + 25); //TODO: от тук се центрират числата в/у боксчетата
         }
     }
 
