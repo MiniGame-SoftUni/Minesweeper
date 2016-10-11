@@ -2,3 +2,92 @@
 body{
     margin: 0;
 }
+
+#showInfoMsg, #showErrorMsg, #linkLogout, #viewRegister, #viewLogin, #viewHome{
+    display:none;
+}
+
+#showInfoMsg{
+    padding: 10px;
+    width: 24%;
+    border-radius: 15px;
+    background-color: #009900;
+    color: black;
+    text-align: center;
+    font-family: Verdana, sans-serif;
+}
+
+#showErrorMsg{
+    padding: 10px;
+    width: 24%;
+    border-radius: 15px;
+    background-color: #cc2900;
+    color: black;
+    text-align: center;
+    font-family: Verdana, sans-serif;
+}
+
+.red-stars{
+    color: #cc2900;
+}
+
+ul{
+    list-style-type: none;
+}
+
+#linkLogin, #linkLogout, #linkRegister {
+    text-decoration: none;
+}
+
+#navbar{
+    background-color: #ffffff;
+}
+
+#navbar li{
+    background-color: #e3d901;
+    display:inline-block;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#navbar li:hover{
+    background-color: #b2aa02;
+}
+
+section{
+    background-color: #a4a4a4;
+    padding: 10px;
+    width: 24%;
+    border-radius: 10px;
+    font-family: Verdana, sans-serif;
+    text-align: left;
+}
+
+section input{
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#loginButton:hover, #registerButton:hover{
+    background-color: #c6c6c6;
+}
+
+#new{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #a4a4a4;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#new:hover{
+    background-color: #7f7e7e;
+    cursor: pointer;
+}
+
+#timer{
+    width: 100px;
+    height: 50px;
+    text-align: center
+}

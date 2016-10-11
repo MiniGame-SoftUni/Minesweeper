@@ -13,7 +13,12 @@
     <canvas id="gCanvas" width="400" height="400"></canvas>
 </div>
 <div id="controls">
-
+    <div id="timer">
+        0s
+    </div>
+    <div id="new" onclick="newGame()">
+        <p>New Game!</p>
+    </div>
 </div>
 
 <div id="usersWrapper">
@@ -21,10 +26,11 @@
         <ul>
             <a href="#" id="linkLogin"><li>LOGIN</li></a>
             <a href="#" id="linkRegister"><li>REGISTER</li></a>
-            <a href="#" id="linkProfile"><li>LOGOUT</li></a>
+            <a href="#" id="linkLogout"><li>LOGOUT</li></a>
         </ul>
     </section>
-
+    <div id="showInfoMsg" onclick="$(this).hide()">INFO</div>
+    <div id="showErrorMsg" onclick="$(this).hide()">ERROR</div>
     <section id="viewRegister">
         <form id="registerForm">
             <div>
@@ -74,6 +80,16 @@
                 <input type="submit" id="loginButton" value="Login"/>
             </div>
         </form>
+    </section>
+
+    <section id="viewHome">
+        <div id="currentUser">
+            <h3>User:</h3>
+        </div>
+        <div id="results">
+            <h3>Results:</h3>
+        </div>
+
     </section>
 </div>
 

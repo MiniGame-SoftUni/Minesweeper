@@ -1,11 +1,10 @@
-
 var userResult; //TODO: това ще пази резултата на всеки играч / това да остане var защото ще го ползвам за юзърите
 
 let s = { // TODO: let matrix / това е матрицата, представена като обект
     rows: 10,
     cols: 10,
     width: 38,
-    height: 38 
+    height: 38
 };
 
 let c; //Това е фактически е канваса, демек контролер върху цялата игра
@@ -19,10 +18,7 @@ window.onload = function () {
     canvas = document.getElementById('gCanvas');
     c = canvas.getContext('2d'); // TODO: по-хубави имена на променливите
 
-    c.fillRect(50, 50, 300, 300);
-    c.fillStyle = '#000';
-    c.fill();
-
+    timer();
     init();
 };
 
@@ -30,6 +26,7 @@ let mX;
 let mY;
 let clickedX;
 let clickedY;
+
 window.onclick = function (e) {
     mX = e.pageX;
     mY = e.pageY;
@@ -37,7 +34,7 @@ window.onclick = function (e) {
     if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
         clickedX = Math.floor(mX/s.width);
         clickedY = Math.floor(mY/s.height);
-        console.log(clickedX + "," + clickedY);
+        console.log(clickedX + "," + clickedY); //TODO: за изтриване
     }
 
     let clickedBomb=false;
@@ -49,7 +46,7 @@ window.onclick = function (e) {
         }
     }
 
-    if(clickedBomb == false){
+    if(clickedBomb == false && mX < s.rows * s.width && mY < s.cols * s.height){
         clickPass(clickedX, clickedY);
     }
 };
@@ -67,17 +64,27 @@ function init() {
 
     for(let i = 0; i < 10;i++){
         bombs[i]=[Math.floor(Math.random() * 8) +1,
-                  Math.floor(Math.random() * 8 )+1]
+            Math.floor(Math.random() * 8 )+1]
     }
 
     drawCanvas();
 
 }
 
+let time = 0;
+function timer() {
+    setTimeout(function () {
+        let timerDiv = document.getElementById('timer');
+        time++;
+        timerDiv.innerHTML = time;
+        timer();
+    }, 1000);
+}
+
 let x;
 let y;
 function drawCanvas() {
-     c.clearRect(0, 0, 400, 400);
+    c.clearRect(0, 0, 400, 400);
 
     for(let i = 0;i < s.rows;i++){
         for(let n = 0;n < s.cols;n++){
@@ -141,7 +148,7 @@ function  clickPass(x, y) {
     if (numbOfBombsSurrounding == 0) {
         for(i in boxesToCheck ){
             if(x+ boxesToCheck[i][0] >= 0 && x + boxesToCheck[i][0] <= 9 && y + boxesToCheck[i][1] >= 0 && y + boxesToCheck[i][1] <= 9 ){
-               let x1 = x + boxesToCheck[i][0];
+                let x1 = x + boxesToCheck[i][0];
                 let y1 = y + boxesToCheck[i][1];
 
                 var alreadyClicked = false;
@@ -153,7 +160,7 @@ function  clickPass(x, y) {
                 if(alreadyClicked == false) {
                     clickPass(x1, y1);
                 }
-             }
+            }
         }
     }
 
@@ -172,5 +179,15 @@ function checkBomb(i,x,y) {
 }
 
 function  lose() {
+
+}
+
+function newGame() {
+    userResult = time;
+    bombs = [];
+    clickedBs = [];
+    time = 0;
+    init();
+    console.log(userResult);
 
 }
