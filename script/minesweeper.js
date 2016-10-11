@@ -65,9 +65,9 @@ function init() {
     zero = new Image();
     zero.src = "./img/zero.png";
 
-    for(let i =0; i < 10;i++){
-        bombs[i]=[Math.floor(Math.random() * 10),
-                  Math.floor(Math.random() * 10)]
+    for(let i = 0; i < 10;i++){
+        bombs[i]=[Math.floor(Math.random() * 8) +1,
+                  Math.floor(Math.random() * 8 )+1]
     }
 
     drawCanvas();
