@@ -1,14 +1,14 @@
-var userResult; //TODO: това ще пази резултата на всеки играч / това да остане var защото ще го ползвам за юзърите
+var userResult; 
 
-let s = { // TODO: let matrix / това е матрицата, представена като обект
+let s = { 
     rows: 10,
     cols: 10,
     width: 38,
     height: 38
 };
 
-let c; //Това е фактически е канваса, демек контролер върху цялата игра
-let canvas; // Нека всички променливи които се използват в дадена функция да са изнесени непосредствено преди нея
+let c; 
+let canvas; 
 let gameOver = false; 
 
 let bombs = [];
@@ -17,7 +17,7 @@ let clickedBs = [];
 
 window.onload = function () {
     canvas = document.getElementById('gCanvas');
-    c = canvas.getContext('2d'); // TODO: по-хубави имена на променливите
+    c = canvas.getContext('2d'); 
 
     timer();
     init();
@@ -115,7 +115,7 @@ let box;
 let num;
 let zero;
 let flag;
-//let bomb;
+let bomb;
 
 function init() {
     box = new Image();
@@ -286,7 +286,7 @@ function  clickPass(x, y) {
 
     drawCanvas();
 
-    //console.log(numbOfBombsSurrounding);
+    
 }
 
 function checkBomb(i,x,y) {

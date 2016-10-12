@@ -148,7 +148,7 @@ function register() {
         function registerSuccess(data) {
             sessionStorage.authtoken = data._kmd.authtoken;
             showHideNavigationLinks();
-            showHomeView();
+            showLoginView();
             showInfo("Register successful, dear " + username);
         }
     } else{
