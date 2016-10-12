@@ -38,7 +38,7 @@ window.onclick = function (e) {
         clickedY = Math.floor(mY/s.height);
     }
 
-    for(i in bombs){
+    for(let i in bombs){ //let
         if(clickedX == bombs[i][0] && clickedY == bombs[i][1]){
             lose();
         }
@@ -55,13 +55,13 @@ window.onclick = function (e) {
 
     if(clickedBomb == false && mX < s.rows * s.width && mY < s.cols * s.height){
         totalClicked = rClickedBs.length + clickedBs.length;
-        console.log(totalClicked);
+        //console.log(totalClicked);
         if(totalClicked == 100){
             win();
         }
         clickPass(clickedX, clickedY);
     }
-}
+};
 let rClickedX;
 let rClickedY;
 let rClickedBs = [];
@@ -82,7 +82,7 @@ window.oncontextmenu = function(e){
 
     inRClickedBs = [false, 0];
 
-    for(i in rClickedBs){
+    for(let i in rClickedBs){ //let
 
         if(rClickedBs[i][0] ==rClickedX && rClickedBs[i][1] == rClickedY){
             inRClickedBs = [true, i];
@@ -99,7 +99,7 @@ window.oncontextmenu = function(e){
             rClickedBs[n][1] = rClickedY;
 
             totalClicked = rClickedBs.length + clickedBs.length;
-            console.lod(totalClicked);
+            console.log(totalClicked);
             if(totalClicked == 100){
                 win();
             }
@@ -112,12 +112,13 @@ window.oncontextmenu = function(e){
         console.log(rightClicks);
     }
     drawCanvas();
-}
+};
 
 let box;
 let num;
 let zero;
 let flag;
+//let bomb;
 
 function init() {
     box = new Image();
@@ -128,7 +129,8 @@ function init() {
     zero.src = "./img/zero.png";
     flag= new Image();
     flag.src = "./img/flag.png";
-
+    //bomb = new Image();
+    //flag.src = "./img/bomb.png";
 
     for(let i = 0; i < 10;i++){
         bombs[i]=[Math.floor(Math.random() * 8) +1,
@@ -144,7 +146,7 @@ function timer() {
     setTimeout(function () {
         let timerDiv = document.getElementById('timer');
         time++;
-        timerDiv.innerHTML = time+"s";
+        timerDiv.innerHTML = time + "s";
         timer();
     }, 1000);
 }
@@ -225,7 +227,7 @@ function  clickPass(x, y) {
         }
     }
 
-    for(k in rClickedBs){
+    for(let k in rClickedBs){ // let
         if(rClickedBs[k][0] == x && rClickedBs[k][1] == y){
             rClickedBs.splice(k, 1);
         }
@@ -233,7 +235,7 @@ function  clickPass(x, y) {
 
     clicked = false;
 
-    for(k in clickedBs){
+    for(let k in clickedBs){ // let
         if(clickedBs[k][0] == x && clickedBs[k][1] == y){
             clicked = true;
         }
@@ -243,7 +245,7 @@ function  clickPass(x, y) {
         clickedBs[(clickedBs.length)] = [x, y, numbOfBombsSurrounding];
     }
     if (numbOfBombsSurrounding == 0) {
-        for(i in boxesToCheck ){
+        for(let i in boxesToCheck ){ // let
             if(x+ boxesToCheck[i][0] >= 0 && x + boxesToCheck[i][0] <= 9 && y + boxesToCheck[i][1] >= 0 && y + boxesToCheck[i][1] <= 9 ){
                 let x1 = x + boxesToCheck[i][0];
                 let y1 = y + boxesToCheck[i][1];
@@ -263,7 +265,7 @@ function  clickPass(x, y) {
 
     drawCanvas();
 
-    console.log(numbOfBombsSurrounding);
+    //console.log(numbOfBombsSurrounding);
 }
 
 function checkBomb(i,x,y) {
@@ -277,6 +279,7 @@ function checkBomb(i,x,y) {
 
 function  lose() {
     alert("You Lost!");
+    //c.drawImage(bomb, x, y);
     newGame();
 }
 
@@ -285,11 +288,13 @@ function win() {
 }
 
 function newGame() {
-    userResult = time;
+    userResult = time;    
     bombs = [];
     clickedBs = [];
     time = 0;
     init();
-    console.log(userResult);
-
+    //console.log(rBeenClicked);
+    
+    //rBeenClicked[1] = false;
+    //console.log(userResult);
 }

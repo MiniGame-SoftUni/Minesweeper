@@ -58,7 +58,7 @@ function login() {
         showHideNavigationLinks();
         showHomeView();
         showInfo("Welcome " + username);
-        $('#currentUser').html("<h3>Username: " + username + "</h3>");
+        $('#currentUser').text("Username: " + username );
     }
 }
 
