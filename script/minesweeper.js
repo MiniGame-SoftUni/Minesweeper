@@ -9,6 +9,7 @@ let s = { // TODO: let matrix / това е матрицата, представ
 
 let c; //Това е фактически е канваса, демек контролер върху цялата игра
 let canvas; // Нека всички променливи които се използват в дадена функция да са изнесени непосредствено преди нея
+let gameOver = false; 
 
 let bombs = [];
 
@@ -29,38 +30,33 @@ let clickedY;
 let totalClicked;
 
 window.onclick = function (e) {
-    mX = e.pageX;
-    mY = e.pageY;
+	if(!gameOver) {
+		mX = e.pageX;
+		mY = e.pageY;
 
 
-    if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
-        clickedX = Math.floor(mX/s.width);
-        clickedY = Math.floor(mY/s.height);
-    }
+		if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
+			clickedX = Math.floor(mX/s.width);
+			clickedY = Math.floor(mY/s.height);
+		}
+		
+		let clickedBomb=false;
 
-    for(let i in bombs){ //let
-        if(clickedX == bombs[i][0] && clickedY == bombs[i][1]){
-            lose();
-        }
-    }
+		for (let i = 0; i < 10; i++) {
+			if(clickedX == bombs[i][0] && clickedY == bombs[i][1]){
+				clickedBomb = true;
+				lose();
+			}
+		}
 
-    let clickedBomb=false;
-
-    for (let i = 0; i < 10; i++) {
-        if(clickedX == bombs[i][0] && clickedY == bombs[i][1]){
-            clickedBomb = true;
-            lose();
-        }
-    }
-
-    if(clickedBomb == false && mX < s.rows * s.width && mY < s.cols * s.height){
-        totalClicked = rClickedBs.length + clickedBs.length;
-        //console.log(totalClicked);
-        if(totalClicked == 100){
-            win();
-        }
-        clickPass(clickedX, clickedY);
-    }
+		if(clickedBomb == false && mX < s.rows * s.width && mY < s.cols * s.height){
+			totalClicked = rClickedBs.length + clickedBs.length;
+			if(totalClicked == 100){
+				win();
+			}
+			clickPass(clickedX, clickedY);
+		}
+	}
 };
 let rClickedX;
 let rClickedY;
@@ -72,46 +68,47 @@ let rightClicks = 0;
 window.oncontextmenu = function(e){
     e.preventDefault();
 
-    mX = e.pageX;
-    mY = e.pageY;
+	if(!gameOver) {
+		mX = e.pageX;
+		mY = e.pageY;
 
-    if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
-        rClickedX = Math.floor(mX/s.width);
-        rClickedY = Math.floor(mY/s.height);
-    }
+		if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
+			rClickedX = Math.floor(mX/s.width);
+			rClickedY = Math.floor(mY/s.height);
+		}
 
-    inRClickedBs = [false, 0];
+		inRClickedBs = [false, 0];
 
-    for(let i in rClickedBs){ //let
+		for(let i in rClickedBs){ //let
 
-        if(rClickedBs[i][0] ==rClickedX && rClickedBs[i][1] == rClickedY){
-            inRClickedBs = [true, i];
-        }
-    }
+			if(rClickedBs[i][0] == rClickedX && rClickedBs[i][1] == rClickedY){
+				inRClickedBs = [true, i];
+			}
+		}
+		if(inRClickedBs[0] == false){
+			if(rClickedBs.length < 10){
+				rightClicks++;
+				
+				n = rClickedBs.length;
+				rClickedBs[n] = [];
+				rClickedBs[n][0] = rClickedX;
+				rClickedBs[n][1] = rClickedY;
 
-    if(inRClickedBs[0] ==false){
-        if(rClickedBs.length < 10){
-            rightClicks++;
-            console.log(rightClicks);
-            n = rClickedBs.length;
-            rClickedBs[n] = [];
-            rClickedBs[n][0] = rClickedX;
-            rClickedBs[n][1] = rClickedY;
-
-            totalClicked = rClickedBs.length + clickedBs.length;
-            console.log(totalClicked);
-            if(totalClicked == 100){
-                win();
-            }
-        }
-    }else{
-        rClickedBs.slice(inRClickedBs[1], 1);
-        if(rightClicks > 0) {
-            rightClicks--;
-        }
-        console.log(rightClicks);
-    }
-    drawCanvas();
+				totalClicked = rClickedBs.length + clickedBs.length;
+				console.log(totalClicked);
+				if(totalClicked == 100){
+					win();
+				}
+			}
+		}else{
+			rClickedBs.splice(inRClickedBs[1], 1);
+			if(rightClicks > 0) {
+				rightClicks--;
+			}
+			
+		}
+		drawCanvas();
+	}
 };
 
 let box;
@@ -129,14 +126,35 @@ function init() {
     zero.src = "./img/zero.png";
     flag= new Image();
     flag.src = "./img/flag.png";
-    //bomb = new Image();
-    //flag.src = "./img/bomb.png";
+    bomb = new Image();
+    bomb.src = "./img/bomb.png";
 
+	let bombX;
+	let bombY;
+	let bombExist;
     for(let i = 0; i < 10;i++){
-        bombs[i]=[Math.floor(Math.random() * 8) +1,
-            Math.floor(Math.random() * 8 )+1]
+	console.log('a');
+		//need to check if this bomb with those numbers was already added in the array
+		//in some cases it will add 2 bombs on the same cell and it will lead to wrong calculations
+		bombX = Math.floor(Math.random() * 8) +1;
+		bombY = Math.floor(Math.random() * 8 )+1;
+		bombExist = false;
+		for(let j = 0; j < bombs.length; j++) {
+			if(bombs[j][0] == bombX && bombs[j][1] == bombY) {
+				bombExist = true;
+			}
+		}
+		if(bombExist) {
+			//reset the current cycle
+			i--;
+		} else {
+			
+			bombs[i]=[bombX,bombY];
+		}
+        
     }
 
+	gameOver = false;
     drawCanvas();
 
 }
@@ -216,7 +234,6 @@ function  clickPass(x, y) {
         [-1,1],
         [-1,0]
     ];
-
     let numbOfBombsSurrounding = 0;
 
     for(let i in boxesToCheck){
@@ -226,10 +243,14 @@ function  clickPass(x, y) {
             }
         }
     }
-
+	
     for(let k in rClickedBs){ // let
         if(rClickedBs[k][0] == x && rClickedBs[k][1] == y){
             rClickedBs.splice(k, 1);
+			console.log(rightClicks);
+			if(rightClicks > 0) {
+				rightClicks--;
+			}
         }
     }
 
@@ -278,9 +299,13 @@ function checkBomb(i,x,y) {
 }
 
 function  lose() {
-    alert("You Lost!");
-    //c.drawImage(bomb, x, y);
-    newGame();
+	gameOver = true;
+	for (let i = 0; i < 10; i++) {
+		x = bombs[i][0] * s.width;
+        y = bombs[i][1] * s.height;
+		c.drawImage(bomb, x, y);
+	}
+    alert("You lose!");
 }
 
 function win() {
@@ -293,13 +318,9 @@ function win() {
 function newGame() {    
     bombs = [];
     clickedBs = [];
+    rClickedBs = [];
+	rightClicks = 0;
+	inRClickedBs = [false, 0];
     time = 0;
     init();
-
-
-
-    //console.log(rBeenClicked);
-    
-    //rBeenClicked[1] = false;
-    //console.log(userResult);
 }
