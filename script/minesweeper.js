@@ -285,14 +285,19 @@ function  lose() {
 
 function win() {
     alert("You Won!");
+    userResult = time;
+    sendAjaxResults();
+    
 }
 
-function newGame() {
-    userResult = time;    
+function newGame() {    
     bombs = [];
     clickedBs = [];
     time = 0;
     init();
+
+
+
     //console.log(rBeenClicked);
     
     //rBeenClicked[1] = false;

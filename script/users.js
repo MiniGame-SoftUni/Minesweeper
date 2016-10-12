@@ -59,7 +59,12 @@ function login() {
         showHomeView();
         showInfo("Welcome " + username);
         $('#currentUser').text("Username: " + username );
+        showTopFive();
     }
+}
+
+function showTopFive(){
+    //TODO
 }
 
 function register() {
@@ -134,6 +139,57 @@ function logout() {
     sessionStorage.clear();
     showHideNavigationLinks();
     location.reload(true);
+}
+
+function sendAjaxResults() {
+    let resultsUrl = kinveyServiceBaseUrl + "appdata/" + kinveyAppId + "/results";
+    let kinveyAuthHeaders = {'Authorization': "Basic " + btoa(kinveyAppId + ":" + kinveyAppMasterSecret)};
+    let resultData = {
+        username: username,
+        score: userResult
+    };
+
+    $.ajax({
+        method: "GET",
+        url: resultsUrl,
+        headers:kinveyAuthHeaders,
+        success: successGet
+    });
+
+    function successGet(data) {
+        for(let result of data){
+
+            let userDataPut = {
+                id: result._id,
+                username: result.username,
+                result: userResult
+            };
+            let userDataPutUrl = kinveyServiceBaseUrl + "appdata/" + kinveyAppId + "/results/" + userDataPut.id;
+
+            if(result.username == username && result.score < userResult){
+                $.ajax({
+                    method: "PUT",
+                    url: userDataPutUrl,
+                    data: userDataPut,
+                    ContentType: 'application/json',
+                    headers: kinveyAuthHeaders,
+                    success: console.log("Result accepted!"),
+                    error: console.log('Failed!!!')
+                });
+            }else{
+                $.ajax({
+                    method: "POST",
+                    url: resultsUrl,
+                    data: resultData,
+                    ContentType: 'application/json',
+                    headers: kinveyAuthHeaders,
+                    success: console.log("Result accepted!"),
+                    error: console.log('Failed!!!')
+                });
+            }
+        }
+    }
+
 }
 
 $(function () {
