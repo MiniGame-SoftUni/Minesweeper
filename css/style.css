@@ -9,7 +9,7 @@ body{
 
 #showInfoMsg{
     padding: 10px;
-    width: 24%;
+
     border-radius: 15px;
     background-color: #009900;
     color: black;
@@ -19,7 +19,7 @@ body{
 
 #showErrorMsg{
     padding: 10px;
-    width: 24%;
+
     border-radius: 15px;
     background-color: #cc2900;
     color: black;
@@ -57,7 +57,7 @@ ul{
 section{
     background-color: #a4a4a4;
     padding: 10px;
-    width: 24%;
+
     border-radius: 10px;
     font-family: Verdana, sans-serif;
     text-align: left;
@@ -73,6 +73,7 @@ section input{
 }
 
 #new{
+    font-family: Verdana, sans-serif;
     width: 200px;
     height: 50px;
     border-radius: 10px;
@@ -89,5 +90,56 @@ section input{
 #timer{
     width: 100px;
     height: 50px;
-    text-align: center
+    text-align: center;
+    font-family: Verdana, sans-serif;
+}
+
+#usersWrapper{
+    position: absolute;
+    top:2px;
+    margin-left: 500px;
+    margin-bottom: 300px;
+    width: 24%;
+}
+
+#currentUser, #results {
+    font-weight: bold;
+}
+
+tr {
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+}
+
+td{
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+}
+
+#sings{
+    padding:15px;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    margin-left: 300px;
+    z-index:999;
+}
+
+
+
+#youWin, #youLose{
+    display: none;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: #7f7e7e;
+}
+
+#youWin {
+    background-color: #009900;
+}
+
+#youLose{
+    background-color: #cc2900;
 }

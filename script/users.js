@@ -49,7 +49,7 @@ function login() {
         data: loginData,
         headers: kinveyAuthHeaders,
         success: loginSuccess
-        //error: showError("Something wrong!")
+
     });
 
     function loginSuccess(data, status) {
@@ -59,12 +59,64 @@ function login() {
         showHomeView();
         showInfo("Welcome " + username);
         $('#currentUser').text("Username: " + username );
-        showTopFive();
+        listTopFiveResults();
+        showHighestResultOfCurrentUser();
+
     }
 }
 
-function showTopFive(){
-    //TODO
+function showHighestResultOfCurrentUser() {
+    let resultsUrl = kinveyServiceBaseUrl + "appdata/" + kinveyAppId + "/results";
+    let kinveyAuthHeaders = {'Authorization': "Basic " + btoa(kinveyAppId + ":" + kinveyAppMasterSecret)};
+
+    $.ajax({
+        method: "GET",
+        url: resultsUrl,
+        headers:kinveyAuthHeaders,
+        success: showUserResult
+    });
+
+    function showUserResult(data) {
+        let highestResult;
+        for(let user of data){
+            if(user.username == username){
+                highestResult = user.score;
+            }
+        }
+
+        $('#results').text("Highest result of current player : " + highestResult);
+    }
+}
+
+function listTopFiveResults(){
+    let resultsUrl = kinveyServiceBaseUrl + "appdata/" + kinveyAppId + "/results";
+    let kinveyAuthHeaders = {'Authorization': "Basic " + btoa(kinveyAppId + ":" + kinveyAppMasterSecret)};
+
+    $.ajax({
+        method: "GET",
+        url: resultsUrl,
+        headers:kinveyAuthHeaders,
+        success: listTopFive
+    });
+
+    function listTopFive(data){
+
+        data.sort(function(a, b) {
+            return Number(a.score) - Number(b.score);
+        });
+
+        let usersToList = data.slice(0, 5);
+        $('#topFiveResults').text("Top 5 results:");
+
+        let html = '<table>\n';
+        html += `\t<tr><th>Name</th><th>Score</th></tr>\n`;
+        for(let user of usersToList){
+            html += `\t<tr><td>${user['username']}</td><td>${user['score']}</td></tr>\n`;
+        }
+        html += "</table>"
+
+        $('#topFiveResults').append(html);
+    }
 }
 
 function register() {
@@ -159,32 +211,36 @@ function sendAjaxResults() {
     function successGet(data) {
         for(let result of data){
 
+            let isExistUser = false;
             let userDataPut = {
                 id: result._id,
                 username: result.username,
-                result: userResult
+                score: userResult
             };
             let userDataPutUrl = kinveyServiceBaseUrl + "appdata/" + kinveyAppId + "/results/" + userDataPut.id;
 
-            if(result.username == username && result.score < userResult){
+            if(result.username == username && Number(result.score) > userResult){
                 $.ajax({
                     method: "PUT",
                     url: userDataPutUrl,
                     data: userDataPut,
                     ContentType: 'application/json',
-                    headers: kinveyAuthHeaders,
-                    success: console.log("Result accepted!"),
-                    error: console.log('Failed!!!')
+                    headers: kinveyAuthHeaders
                 });
-            }else{
+            }
+
+            if(result.username == username){
+                isExistUser = true;
+            }
+
+            if(isExistUser == false){
                 $.ajax({
                     method: "POST",
                     url: resultsUrl,
                     data: resultData,
                     ContentType: 'application/json',
-                    headers: kinveyAuthHeaders,
-                    success: console.log("Result accepted!"),
-                    error: console.log('Failed!!!')
+                    headers: kinveyAuthHeaders
+
                 });
             }
         }

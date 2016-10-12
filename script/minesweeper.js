@@ -305,11 +305,11 @@ function  lose() {
         y = bombs[i][1] * s.height;
 		c.drawImage(bomb, x, y);
 	}
-    alert("You lose!");
+    $('#youLose').show().delay(6000).fadeOut();
 }
 
 function win() {
-    alert("You Won!");
+    $('#youWin').show().delay(6000).fadeOut();
     userResult = time;
     sendAjaxResults();
     
