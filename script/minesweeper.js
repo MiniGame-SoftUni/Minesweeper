@@ -26,15 +26,22 @@ let mX;
 let mY;
 let clickedX;
 let clickedY;
+let totalClicked;
 
 window.onclick = function (e) {
     mX = e.pageX;
     mY = e.pageY;
 
+
     if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
         clickedX = Math.floor(mX/s.width);
         clickedY = Math.floor(mY/s.height);
-        console.log(clickedX + "," + clickedY); //TODO: за изтриване
+    }
+
+    for(i in bombs){
+        if(clickedX == bombs[i][0] && clickedY == bombs[i][1]){
+            lose();
+        }
     }
 
     let clickedBomb=false;
@@ -47,13 +54,71 @@ window.onclick = function (e) {
     }
 
     if(clickedBomb == false && mX < s.rows * s.width && mY < s.cols * s.height){
+        totalClicked = rClickedBs.length + clickedBs.length;
+        console.log(totalClicked);
+        if(totalClicked == 100){
+            win();
+        }
         clickPass(clickedX, clickedY);
     }
-};
+}
+let rClickedX;
+let rClickedY;
+let rClickedBs = [];
+let inRClickedBs = [false, 0];
+let n;
+let rightClicks = 0;
+
+window.oncontextmenu = function(e){
+    e.preventDefault();
+
+    mX = e.pageX;
+    mY = e.pageY;
+
+    if(Math.floor(mX/s.width) < s.cols && Math.floor(mY/s.height) < s.rows){
+        rClickedX = Math.floor(mX/s.width);
+        rClickedY = Math.floor(mY/s.height);
+    }
+
+    inRClickedBs = [false, 0];
+
+    for(i in rClickedBs){
+
+        if(rClickedBs[i][0] ==rClickedX && rClickedBs[i][1] == rClickedY){
+            inRClickedBs = [true, i];
+        }
+    }
+
+    if(inRClickedBs[0] ==false){
+        if(rClickedBs.length < 10){
+            rightClicks++;
+            console.log(rightClicks);
+            n = rClickedBs.length;
+            rClickedBs[n] = [];
+            rClickedBs[n][0] = rClickedX;
+            rClickedBs[n][1] = rClickedY;
+
+            totalClicked = rClickedBs.length + clickedBs.length;
+            console.lod(totalClicked);
+            if(totalClicked == 100){
+                win();
+            }
+        }
+    }else{
+        rClickedBs.slice(inRClickedBs[1], 1);
+        if(rightClicks > 0) {
+            rightClicks--;
+        }
+        console.log(rightClicks);
+    }
+    drawCanvas();
+}
 
 let box;
 let num;
 let zero;
+let flag;
+
 function init() {
     box = new Image();
     box.src = "./img/box.png";
@@ -61,6 +126,9 @@ function init() {
     num.src = "./img/num.png";
     zero = new Image();
     zero.src = "./img/zero.png";
+    flag= new Image();
+    flag.src = "./img/flag.png";
+
 
     for(let i = 0; i < 10;i++){
         bombs[i]=[Math.floor(Math.random() * 8) +1,
@@ -76,13 +144,14 @@ function timer() {
     setTimeout(function () {
         let timerDiv = document.getElementById('timer');
         time++;
-        timerDiv.innerHTML = time;
+        timerDiv.innerHTML = time+"s";
         timer();
     }, 1000);
 }
 
 let x;
 let y;
+let rBeenClicked = [0, false];
 function drawCanvas() {
     c.clearRect(0, 0, 400, 400);
 
@@ -107,7 +176,20 @@ function drawCanvas() {
                     c.drawImage(zero, x, y);
                 }
             }else{
-                c.drawImage(box, x, y);
+                rBeenClicked = [0, false];
+                 if(rClickedBs.length > 0){
+                    for(let k = 0; k < rClickedBs.length; k++){
+                        if(rClickedBs[k][0] == n && rClickedBs[k][1] == i){
+                            rBeenClicked = [k, true];
+                        }
+                    }
+                }
+
+                if(rBeenClicked[1] == true){
+                    c.drawImage(flag, x, y);
+                }else {
+                    c.drawImage(box, x, y);
+                }
             }
         }
     }
@@ -120,7 +202,7 @@ function drawCanvas() {
     }
 
 }
-
+var clicked;
 function  clickPass(x, y) {
     let boxesToCheck=[
         [-1,-1],
@@ -143,8 +225,23 @@ function  clickPass(x, y) {
         }
     }
 
-    clickedBs[(clickedBs.length)] = [x, y, numbOfBombsSurrounding];
+    for(k in rClickedBs){
+        if(rClickedBs[k][0] == x && rClickedBs[k][1] == y){
+            rClickedBs.splice(k, 1);
+        }
+    }
 
+    clicked = false;
+
+    for(k in clickedBs){
+        if(clickedBs[k][0] == x && clickedBs[k][1] == y){
+            clicked = true;
+        }
+    }
+
+    if(clicked == false) {
+        clickedBs[(clickedBs.length)] = [x, y, numbOfBombsSurrounding];
+    }
     if (numbOfBombsSurrounding == 0) {
         for(i in boxesToCheck ){
             if(x+ boxesToCheck[i][0] >= 0 && x + boxesToCheck[i][0] <= 9 && y + boxesToCheck[i][1] >= 0 && y + boxesToCheck[i][1] <= 9 ){
@@ -179,7 +276,12 @@ function checkBomb(i,x,y) {
 }
 
 function  lose() {
+    alert("You Lost!");
+    newGame();
+}
 
+function win() {
+    alert("You Won!");
 }
 
 function newGame() {
